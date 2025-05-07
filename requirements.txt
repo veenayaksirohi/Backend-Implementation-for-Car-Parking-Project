@@ -1,0 +1,11 @@
+Flask
+Flask-RESTful
+Flask-Cors
+mysql-connector-python
+python-dotenv
+Flask-SQLAlchemy
+psycopg2-binary # PostgreSQL database adapter for Python
+pytest
+pytest-cov
+python-dotenv
+pyjwt
