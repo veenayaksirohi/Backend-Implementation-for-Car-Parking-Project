@@ -2,7 +2,7 @@
 import pytest
 import os
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from app import create_app, db
 from app import ParkingLotDetails, Floor, Row, Slot, User, ParkingSession
 import json
@@ -107,7 +107,7 @@ def client():
 def get_auth_token(user_id=1):
     token_payload = {
         'user_id': user_id,
-        'exp': datetime.utcnow() + timedelta(hours=24)
+        'exp': datetime.now(timezone.utc) + timedelta(hours=24)
     }
     return jwt.encode(token_payload, JWT_SECRET_KEY, algorithm='HS256')
 

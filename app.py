@@ -1,6 +1,6 @@
 import os
 import urllib.parse
-from datetime import datetime, timedelta
+from datetime import datetime, timezone, timedelta
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
@@ -280,7 +280,7 @@ def create_app(test_config=None):
         # Generate token
         token_payload = {
             'user_id': user.user_id,
-            'exp': datetime.utcnow() + timedelta(hours=JWT_EXPIRATION_HOURS)
+            'exp': datetime.now(timezone.utc) + timedelta(hours=JWT_EXPIRATION_HOURS)
         }
         token = jwt.encode(token_payload, JWT_SECRET_KEY, algorithm='HS256')
         
@@ -413,7 +413,7 @@ def create_app(test_config=None):
                 return jsonify({'error': 'No available slots in the parking lot'}), 400
 
         # Generate ticket & update slot
-        ticket_id = f"TKT-{slot.slot_id}-{int(datetime.utcnow().timestamp())}"
+        ticket_id = f"TKT-{slot.slot_id}-{int(datetime.now(timezone.utc).timestamp())}"
         slot.status = 1  # mark occupied
         slot.vehicle_reg_no = vehicle_reg_no
         slot.ticket_id = ticket_id
@@ -427,7 +427,7 @@ def create_app(test_config=None):
             slot_id=slot.slot_id,
             vehicle_reg_no=vehicle_reg_no,
             user_id=user_id,
-            start_time=datetime.utcnow()
+            start_time=datetime.now(timezone.utc)
         )
         db.session.add(session)
         db.session.commit()
@@ -472,7 +472,7 @@ def create_app(test_config=None):
         slot.ticket_id = None
 
         # Close the session
-        session.end_time = datetime.utcnow()
+        session.end_time = datetime.now(timezone.utc)
 
         # Commit changes
         db.session.commit()

@@ -3,6 +3,8 @@ Flask-RESTful
 Flask-Cors
 mysql-connector-python
 python-dotenv
+SQLAlchemy==1.4.46
+sqlalchemy<2.0
 Flask-SQLAlchemy
 psycopg2-binary # PostgreSQL database adapter for Python
 pytest
