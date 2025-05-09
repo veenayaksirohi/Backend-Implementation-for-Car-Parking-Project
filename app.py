@@ -160,7 +160,7 @@ def create_app(test_config=None):
     else:
         username = "postgres"
         password = urllib.parse.quote_plus("root")
-        host = "localhost"
+        host = os.environ.get('DB_HOST', 'localhost')
         port = 5432
         database_name = "parking_database"
 

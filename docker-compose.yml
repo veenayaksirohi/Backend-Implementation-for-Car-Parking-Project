@@ -1,40 +1,32 @@
-version: '3.9'
-
 services:
   db:
-    image: postgres:13
+    image: postgres:17
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: parking_test
+      POSTGRES_DB: parking_database
     volumes:
-      # Mount your SQL schema into the init directory for automatic execution
-      - ./parking_database_backup.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    ports:
-      - "5432:5432"
+      - db_data:/var/lib/postgresql/data
+      - ./parking_database_backup.sql:/docker-entrypoint-initdb.d/backup.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    restart: always
+  web:
+    build: .
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
-      # These variables configure your Flask/SQLAlchemy connection
-      host: db
-      port: 5432
-      database_name: parking_database
-      username: postgres
-      password: root
+      DB_HOST: db
+      DB_PORT: 5432
+      SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@db:5432/parking_database
+      JWT_SECRET_KEY: your-secret-key-here
     ports:
       - "5000:5000"
-    volumes:
-      # Mount the current directory into /app for code access
-      - ./:/app
-    command: ["uvicorn", "run:app", "--host", "0.0.0.0", "--port", "5000"]
 
-networks:
-  default:
-    name: parking_network
+volumes:
+  db_data:
