@@ -167,6 +167,7 @@ def create_app(test_config=None):
         # Set the SQLAlchemy database URI
         app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{username}:{password}@{host}:{port}/{database_name}"
         app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        
 
     db.init_app(app)
 

@@ -1,3 +1,4 @@
+# commented part is for testing purposes 
 services:
   db:
     image: postgres:17
@@ -15,6 +16,21 @@ services:
       timeout: 5s
       retries: 5
 
+  # db_test:
+  #   image: postgres:17
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: root
+  #     POSTGRES_DB: parking_test
+  #   volumes:
+  #     - db_test_data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  
   web:
     build: .
     depends_on:
@@ -27,6 +43,21 @@ services:
       JWT_SECRET_KEY: your-secret-key-here
     ports:
       - "5000:5000"
+  
+  # test:
+  #   build: .
+  #   depends_on:
+  #     db_test:
+  #       condition: service_healthy
+  #   environment:
+  #     DB_HOST: db_test
+  #     DB_PORT: 5432
+  #     SQLALCHEMY_DATABASE_URI: postgresql://postgres:root@db_test:5432/parking_test
+  #     JWT_SECRET_KEY: your-secret-key-here
+  #   command: pytest -v --disable-warnings --maxfail=1
+  #   ports:
+  #     - "5001:5000"
 
 volumes:
   db_data:
+  db_test_data:

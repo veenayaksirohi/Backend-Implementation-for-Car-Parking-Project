@@ -19,18 +19,33 @@ JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'your-secret-key-here')
 @pytest.fixture
 def client():
     # Get database connection details from environment variables or use defaults
-    DB_USER = "postgres" 
-    DB_PASSWORD = urllib.parse.quote_plus("root")
-    DB_HOST = "localhost"
-    DB_PORT = 5432
-    DB_NAME = "parking_test"
-    
+    # DB_USER = os.environ.get("POSTGRES_USER", "postgres")
+    # DB_PASSWORD = urllib.parse.quote_plus(os.environ.get("POSTGRES_PASSWORD", "root"))
+    # DB_HOST = os.environ.get("DB_HOST", "localhost")
+    # DB_PORT = os.environ.get("DB_PORT", "5432")
+    # DB_NAME = os.environ.get("POSTGRES_DB", "parking_test")
+    # # Configure test app
+    # app = create_app(test_config={
+    #     'TESTING': True,
+    #     'SQLALCHEMY_DATABASE_URI': f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}',
+    #     'SQLALCHEMY_TRACK_MODIFICATIONS': False
+        
+    # })
+    DB_USER = os.environ.get("POSTGRES_USER", "postgres")
+    DB_PASSWORD = urllib.parse.quote_plus(os.environ.get("POSTGRES_PASSWORD", "root"))
+    DB_HOST = os.environ.get("DB_HOST", "localhost")
+    DB_PORT = os.environ.get("DB_PORT", "5432")
+    DB_NAME = os.environ.get("POSTGRES_DB", "parking_test")
     # Configure test app
     app = create_app(test_config={
         'TESTING': True,
-        'SQLALCHEMY_DATABASE_URI': f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}',
-        'SQLALCHEMY_TRACK_MODIFICATIONS': False
+        'SQLALCHEMY_DATABASE_URI': (
+            f"postgresql://{DB_USER}:{DB_PASSWORD}@"
+            f"{DB_HOST}:{DB_PORT}/{DB_NAME}"
+        ),
+        'SQLALCHEMY_TRACK_MODIFICATIONS': False,
     })
+
 
     # Prepare test database
     with app.app_context():
