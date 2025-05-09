@@ -5,6 +5,7 @@ on:
   push:
     branches: [ main ]
   pull_request:
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -16,14 +17,13 @@ jobs:
 
       - name: Build & start services
         run: |
-          docker-compose up -d --build
+          docker compose up -d --build
           # wait for db healthy
-          docker-compose exec db sh -c 'until pg_isready -U postgres; do sleep 1; done'
+          docker compose exec db sh -c 'until pg_isready -U postgres; do sleep 1; done'
 
       - name: Install pytest
         run: pip install pytest psycopg2-binary
 
       - name: Run tests
         run: |
-          # inside the web container, or locally pointing at db
           pytest --verbose
