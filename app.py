@@ -191,6 +191,13 @@ def create_app(test_config=None):
                 # Decode token
                 data = jwt.decode(token, JWT_SECRET_KEY, algorithms=['HS256'])
                 current_user_id = data['user_id']
+                '''
+                ADDITIONAL CHECKS
+                # Optional: Check if user exists in the database
+                user = User.query.get(current_user_id)
+                if not user:
+                    return jsonify({'error': 'User not found'}), 404
+                '''
             except Exception:
                 return jsonify({'error': 'Invalid or expired token'}), 401
                 
