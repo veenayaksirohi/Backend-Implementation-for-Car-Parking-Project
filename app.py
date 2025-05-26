@@ -312,6 +312,7 @@ def create_app(test_config=None):
                     'city': entry.city,
                     'landmark': entry.landmark,
                     'address': entry.address,
+                    'available_car_slots': entry.available_car_slots,
                     # Add other fields as needed
                 })
             return jsonify(result), 200
