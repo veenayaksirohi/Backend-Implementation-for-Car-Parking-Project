@@ -308,12 +308,33 @@ def create_app(test_config=None):
             for entry in entries:
                 result.append({
                     'parkinglot_id': entry.parkinglot_id,
-                    'parking_name': entry.parking_name,
-                    'city': entry.city,
-                    'landmark': entry.landmark,
-                    'address': entry.address,
-                    'available_car_slots': entry.available_car_slots,
-                    # Add other fields as needed
+            'parking_name': entry.parking_name,
+            'city': entry.city,
+            'landmark': entry.landmark,
+            'address': entry.address,
+            'latitude': float(entry.latitude) if entry.latitude else None,
+            'longitude': float(entry.longitude) if entry.longitude else None,
+            'physical_appearance': entry.physical_appearance,
+            'parking_ownership': entry.parking_ownership,
+            'parking_surface': entry.parking_surface,
+            'has_cctv': entry.has_cctv,
+            'has_boom_barrier': entry.has_boom_barrier,
+            'ticket_generated': entry.ticket_generated,
+            'entry_exit_gates': entry.entry_exit_gates,
+            'weekly_off': entry.weekly_off,
+            'parking_timing': entry.parking_timing,
+            'vehicle_types': entry.vehicle_types,
+            'car_capacity': entry.car_capacity,
+            'available_car_slots': entry.available_car_slots,
+            'two_wheeler_capacity': entry.two_wheeler_capacity,
+            'available_two_wheeler_slots': entry.available_two_wheeler_slots,
+            'parking_type': entry.parking_type,
+            'payment_modes': entry.payment_modes,
+            'car_parking_charge': entry.car_parking_charge,
+            'two_wheeler_parking_charge': entry.two_wheeler_parking_charge,
+            'allows_prepaid_passes': entry.allows_prepaid_passes,
+            'provides_valet_services': entry.provides_valet_services,
+            'value_added_services': entry.value_added_services
                 })
             return jsonify(result), 200
         except Exception as e:
