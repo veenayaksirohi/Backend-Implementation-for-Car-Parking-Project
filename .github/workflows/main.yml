@@ -1,5 +1,6 @@
 name: Run Flask Tests with Docker Compose
 
+
 on:
   push:
     branches: [main]
@@ -13,20 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Docker Compose
-        run: docker compose -f docker-compose.test.yml up -d --build
+      - name: Build and run test environment with Docker Compose
+        run: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
 
-      - name: Wait for Flask to be ready
-        run: |
-          echo "Waiting for Flask app..."
-          until curl --silent --fail http://localhost:5000 > /dev/null; do
-            sleep 2
-          done
-          echo "Flask is up!"
-
-      - name: Run tests
-        run: docker compose -f docker-compose.test.yml exec -T flask pytest --verbose
-
-      - name: Tear down
+      - name: Tear down containers
         if: always()
-        run: docker compose -f docker-compose.test.yml down
+        run: docker compose -f docker-compose.test.yml down -v
