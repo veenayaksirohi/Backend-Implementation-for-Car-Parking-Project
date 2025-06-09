@@ -3,7 +3,10 @@ name: Test_Using_built-in_Postgres_service_in_Actions
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - 'PA-*'
+      - '**'
   pull_request:
 
 jobs:
