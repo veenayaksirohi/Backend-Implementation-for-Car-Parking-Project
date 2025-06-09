@@ -9,6 +9,7 @@ from sqlalchemy.orm import relationship
 import jwt
 from functools import wraps
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 # Load environment variables from .env file if it exists (useful for local dev)
 load_dotenv()
@@ -170,6 +171,7 @@ def create_app(test_config=None):
         
 
     db.init_app(app)
+    CORS(app) # Initialize CORS
 
     # Simple JWT token verification
     def token_required(f):
