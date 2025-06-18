@@ -3,3 +3,22 @@
 /.pytest_cache
 /.vscode
 /schema.sql
+
+# PyCharm
+.idea/
+*.iml
+*.iws
+*.ipr
+*.iws
+.idea_modules/
+out/
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/dictionaries
+.idea/shelf/
+.idea/httpRequests/
+.idea/datasources.xml
+.idea/dataSources.ids
+.idea/sqlDataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
