@@ -1,7 +1,7 @@
 import os
 import urllib.parse
 from datetime import datetime, timezone, timedelta
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import Column, Integer, String, ForeignKeyConstraint, text, Computed
@@ -310,37 +310,42 @@ def create_app(test_config=None):
             for entry in entries:
                 result.append({
                     'parkinglot_id': entry.parkinglot_id,
-            'parking_name': entry.parking_name,
-            'city': entry.city,
-            'landmark': entry.landmark,
-            'address': entry.address,
-            'latitude': float(entry.latitude) if entry.latitude else None,
-            'longitude': float(entry.longitude) if entry.longitude else None,
-            'physical_appearance': entry.physical_appearance,
-            'parking_ownership': entry.parking_ownership,
-            'parking_surface': entry.parking_surface,
-            'has_cctv': entry.has_cctv,
-            'has_boom_barrier': entry.has_boom_barrier,
-            'ticket_generated': entry.ticket_generated,
-            'entry_exit_gates': entry.entry_exit_gates,
-            'weekly_off': entry.weekly_off,
-            'parking_timing': entry.parking_timing,
-            'vehicle_types': entry.vehicle_types,
-            'car_capacity': entry.car_capacity,
-            'available_car_slots': entry.available_car_slots,
-            'two_wheeler_capacity': entry.two_wheeler_capacity,
-            'available_two_wheeler_slots': entry.available_two_wheeler_slots,
-            'parking_type': entry.parking_type,
-            'payment_modes': entry.payment_modes,
-            'car_parking_charge': entry.car_parking_charge,
-            'two_wheeler_parking_charge': entry.two_wheeler_parking_charge,
-            'allows_prepaid_passes': entry.allows_prepaid_passes,
-            'provides_valet_services': entry.provides_valet_services,
-            'value_added_services': entry.value_added_services
+                    'parking_name': entry.parking_name,
+                    'city': entry.city,
+                    'landmark': entry.landmark,
+                    'address': entry.address,
+                    'latitude': float(entry.latitude) if entry.latitude else None,
+                    'longitude': float(entry.longitude) if entry.longitude else None,
+                    'physical_appearance': entry.physical_appearance,
+                    'parking_ownership': entry.parking_ownership,
+                    'parking_surface': entry.parking_surface,
+                    'has_cctv': entry.has_cctv,
+                    'has_boom_barrier': entry.has_boom_barrier,
+                    'ticket_generated': entry.ticket_generated,
+                    'entry_exit_gates': entry.entry_exit_gates,
+                    'weekly_off': entry.weekly_off,
+                    'parking_timing': entry.parking_timing,
+                    'vehicle_types': entry.vehicle_types,
+                    'car_capacity': entry.car_capacity,
+                    'available_car_slots': entry.available_car_slots,
+                    'two_wheeler_capacity': entry.two_wheeler_capacity,
+                    'available_two_wheeler_slots': entry.available_two_wheeler_slots,
+                    'parking_type': entry.parking_type,
+                    'payment_modes': entry.payment_modes,
+                    'car_parking_charge': entry.car_parking_charge,
+                    'two_wheeler_parking_charge': entry.two_wheeler_parking_charge,
+                    'allows_prepaid_passes': entry.allows_prepaid_passes,
+                    'provides_valet_services': entry.provides_valet_services,
+                    'value_added_services': entry.value_added_services
                 })
-            return jsonify(result), 200
+            response = make_response(jsonify(result), 200)
+            response.headers['Content-Type'] = 'application/json; charset=utf-8'
+            response.headers['Connection'] = 'keep-alive'
+            return response
         except Exception as e:
-            return jsonify({'error': str(e)}), 500
+            response = make_response(jsonify({'error': str(e)}), 500)
+            response.headers['Content-Type'] = 'application/json; charset=utf-8'
+            return response
 
     @app.route('/parking_lot_structure', methods=['GET'])
     @token_required

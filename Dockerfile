@@ -10,5 +10,5 @@ COPY . .
 
 EXPOSE 5000
 
-# Run the Flask entrypoint directly
-CMD ["python", "run.py"]
+# Use Gunicorn with gevent worker for production WSGI serving with access logs to stdout
+CMD ["gunicorn", "-w", "4", "-k", "gevent", "-b", "0.0.0.0:5000", "--access-logfile", "-", "run:app"]

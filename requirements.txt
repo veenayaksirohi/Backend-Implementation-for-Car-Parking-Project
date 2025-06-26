@@ -11,3 +11,5 @@ pytest
 pytest-cov
 python-dotenv
 pyjwt
+gunicorn
+gevent
